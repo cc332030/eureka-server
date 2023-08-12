@@ -1,0 +1,19 @@
+
+name: deploy
+
+on:
+  push:
+    branches:
+      - "*"
+    tags-ignore:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  deploy:
+    uses: cc332030/gradle/.github/workflows/deploy-image-dockerfile.yml@master
+    secrets:
+      REGISTRY_USERNAME: ${{ github.actor }}
+      REGISTRY_PASSWORD: ${{ secrets.DOCKER_TOKEN }}

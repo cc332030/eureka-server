@@ -1,0 +1,18 @@
+
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    # 关闭自我保护模式，开启状态下服务停掉 eureka 不会立即清除掉宕掉的服务
+    enable-self-preservation: false
+    # 清理无效节点
+    eviction-interval-timer-in-ms: 10000
