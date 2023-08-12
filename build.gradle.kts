@@ -4,31 +4,32 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
-    id("org.springframework.boot") version "2.7.14"
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.21"
+    id("org.springframework.boot") version "3.1.2"
+    id("io.spring.dependency-management") version "1.1.2"
+    kotlin("jvm") version "1.8.22"
+    kotlin("plugin.spring") version "1.8.22"
 }
 
-extra["springCloudVersion"] = "2022.0.4"
+
 
 dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-server")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 }
 
+val springCloudVersion: String by project
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
     }
 }
 
 val jdkVersion: String by project
-
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-Xjsr305=strict"
@@ -37,7 +38,7 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.withType<JavaExec>().configureEach {
-    dependsOn(tasks.compileJava)
+    dependsOn(tasks.compileKotlin)
     javaLauncher.set(javaToolchains.launcherFor {
         languageVersion.set(JavaLanguageVersion.of(jdkVersion))
         vendor.set(JvmVendorSpec.IBM)
