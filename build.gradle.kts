@@ -10,13 +10,6 @@ plugins {
     kotlin("plugin.spring") version "1.6.21"
 }
 
-val jdkVersion: String by project
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(jdkVersion))
-    }
-}
-
 extra["springCloudVersion"] = "2022.0.4"
 
 dependencies {
@@ -34,11 +27,21 @@ dependencyManagement {
     }
 }
 
+val jdkVersion: String by project
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-Xjsr305=strict"
         jvmTarget = jdkVersion
     }
+}
+
+tasks.withType<JavaExec>().configureEach {
+    dependsOn(tasks.compileJava)
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(jdkVersion))
+        vendor.set(JvmVendorSpec.IBM)
+    })
 }
 
 tasks.named<BootJar>("bootJar") {
