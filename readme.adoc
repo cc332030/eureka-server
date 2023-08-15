@@ -1,7 +1,2 @@
 
-= ubuntu-wsl
-
-[source,shell]
-----
-chmod -R 700 ~/.ssh
-----
+= eureka-server
