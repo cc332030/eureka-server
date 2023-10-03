@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  eureka-server:
+    image: c332030/eureka-server
+    container_name: eureka-server
+    restart: unless-stopped
+    privileged: true
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      spring_profiles_active: test
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./logs:/app/logs
